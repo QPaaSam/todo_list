@@ -23,6 +23,13 @@ class Tasklist(LoginRequiredMixin,ListView):
     model = Task
     context_object_name = 'tasks' #this overides the default queryset name of 'object_list' to tasks
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tasks'] = context['tasks'].filter(user=self.request.user) #This displays task created by a particular user
+        context['count'] = context['tasks'].filter(complete=False).count() #This counts the tasks which are not completed
+        return context 
+
+
 class TaskDetail(LoginRequiredMixin, DetailView):
     model = Task
     context_object_name = 'task'
