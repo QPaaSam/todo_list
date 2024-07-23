@@ -35,7 +35,7 @@ class RegisterPage(FormView):
             login(self.request, user)
         return super(RegisterPage, self).form_valid(form)
 
- # this makes sure a loggen in user doesn't access a login or register page   
+ # this makes sure a logged in user is sent to the tasks page ie. doesn't access a login or register page   
     def get(self,*args, **kwargs):
         if self.request.user.is_authenticated:
             return redirect('tasks')
