@@ -50,6 +50,12 @@ class Tasklist(LoginRequiredMixin,ListView):
         context = super().get_context_data(**kwargs)
         context['tasks'] = context['tasks'].filter(user=self.request.user) #This displays task created by a particular user
         context['count'] = context['tasks'].filter(complete=False).count() #This counts the tasks which are not completed
+        
+        #This handles the search process
+        search_input = self.request.GET.get('search-area') or '' #this states that a search input can be whatever is typed inside the search box or an empty string('') ie it'll be blank if nothing is searched
+        if search_input:
+            context['tasks'] = context['tasks'].filter(
+                title__icontains=search_input)   #this searches through the tasks list for the task that contains the search input
         return context 
 
 
